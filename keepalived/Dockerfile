@@ -62,6 +62,7 @@ RUN set -eux; \
 		--disable-libipset \
     && make && make install \
     && strip /usr/sbin/keepalived \
+    && cd - \
     && rm -rf /usr/src/keepalived
 
 # https://www.haproxy.org/download/1.8/doc/management.txt
