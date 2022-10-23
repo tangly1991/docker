@@ -39,8 +39,9 @@ RUN set -eux; \
 	tar -xzf keepalived.tar.gz -C /usr/src/keepalived --strip-components=1; \
 	rm keepalived.tar.gz; \
 	\
-    /usr/src/keepalived/build_setup; \
-    /usr/src/keepalived/configure \
+    cd /usr/src/keepalived; \
+    ./build_setup; \
+    ./configure \
 		--disable-dynamic-linking \
 		--prefix=/usr \
 		--exec-prefix=/usr \
