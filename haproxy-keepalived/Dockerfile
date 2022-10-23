@@ -46,6 +46,7 @@ RUN set -eux; \
 		libmnl-dev \
 		libnftnl-dev \
 		net-snmp-dev \
+		libtool \
 		autoconf \
 		automake \
 	; \
