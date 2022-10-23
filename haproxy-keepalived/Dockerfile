@@ -85,9 +85,9 @@ RUN set -eux; \
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
 	\
 # smoke test
-	haproxy -v
-
-RUN cd /usr/src/keepalived \
+	haproxy -v \
+	\
+	cd /usr/src/keepalived \
     && ./autogen.sh \
     && ./configure \
 		--disable-dynamic-linking \
