@@ -28,6 +28,7 @@ RUN set -eux; \
 		libc6-dev \
 		liblua5.3-dev \
 		libpcre2-dev \
+		openssl \
 		libssl-dev \
 		make \
 		wget \
@@ -90,16 +91,7 @@ COPY docker-entrypoint.sh /usr/local/bin/
 
 ADD keepalived-2.2.7.tar.gz /
 
-RUN set -eux; \
-	su - root; \
-	\
-	savedAptMark="$(apt-mark showmanual)"; \
-	apt-get update && apt-get install -y --no-install-recommends \
-		openssl \
-	; \
-	\
-	tar -zxvf /keepalived-2.2.7.tar.gz; \
-	rm -rf /keepalived-2.2.7.tar.gz;
+RUN tar -zxvf /keepalived-2.2.7.tar.gz;
 
 RUN cd /keepalived-2.2.7/ \
     && ./autogen.sh \
@@ -125,7 +117,8 @@ RUN cd /keepalived-2.2.7/ \
     && make && make install \
     && strip /usr/sbin/keepalived \
     && cd - \
-    && rm -rf /keepalived-2.2.7
+    && rm -rf /keepalived-2.2.7 \
+    && rm -rf /keepalived-2.2.7.tar.gz;
 
 COPY ./haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg
 
