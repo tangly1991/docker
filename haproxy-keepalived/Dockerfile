@@ -2,23 +2,14 @@ FROM debian:bullseye-slim
 
 # roughly, https://salsa.debian.org/haproxy-team/haproxy/-/blob/732b97ae286906dea19ab5744cf9cf97c364ac1d/debian/haproxy.postinst#L5-6
 RUN set -eux; \
-<<<<<<< HEAD
 	groupadd --gid 99 --system haproxy; \
-=======
-	groupadd --gid 999 --system keepalived; \
->>>>>>> b8c0126f995405459595b989167fbaf3c4f4ffaf
 	useradd \
 		--gid haproxy \
 		--home-dir /var/lib/haproxy \
 		--no-create-home \
 		--system \
-<<<<<<< HEAD
 		--uid 99 \
 		haproxy \
-=======
-		--uid 999 \
-		keepalived \
->>>>>>> b8c0126f995405459595b989167fbaf3c4f4ffaf
 	; \
 	mkdir /var/lib/haproxy; \
 	chown haproxy:haproxy /var/lib/haproxy
