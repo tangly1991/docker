@@ -6,6 +6,16 @@ ENV KEEPALIVED_URL https://www.keepalived.org/software/keepalived-2.2.7.tar.gz
 RUN set -eux; \
 	\
 	apk add --no-cache --virtual .build-deps \
+		gcc \
+		libc-dev \
+		linux-headers \
+		lua5.3-dev \
+		make \
+		openssl \
+		openssl-dev \
+		pcre2-dev \
+		readline-dev \
+		tar \
 		libressl-dev \
 		pcre2 \
 		binutils \
