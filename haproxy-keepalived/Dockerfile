@@ -1,23 +1,5 @@
-FROM alpine:latest
+FROM registry.cn-hangzhou.aliyuncs.com/ame/haproxy:v2.7-dev8
 
-# roughly, https://git.alpinelinux.org/aports/tree/main/haproxy/haproxy.pre-install?h=3.12-stable
-RUN set -eux; \
-	addgroup --gid 99 --system haproxy; \
-	adduser \
-		--disabled-password \
-		--home /var/lib/haproxy \
-		--ingroup haproxy \
-		--no-create-home \
-		--system \
-		--uid 99 \
-		haproxy \
-	; \
-	mkdir /var/lib/haproxy; \
-	chown haproxy:haproxy /var/lib/haproxy
-
-ENV HAPROXY_VERSION 2.7-dev8
-ENV HAPROXY_URL https://www.haproxy.org/download/2.7/src/devel/haproxy-2.7-dev8.tar.gz
-ENV HAPROXY_SHA256 381cba4ec93205c1376eae148924f06f7f485eba9b1f953f89104d997a9e7747
 ENV KEEPALIVED_URL https://www.keepalived.org/software/keepalived-2.2.7.tar.gz
 
 # see https://sources.debian.net/src/haproxy/jessie/debian/rules/ for some helpful navigation of the possible "make" arguments
@@ -31,11 +13,11 @@ RUN set -eux; \
 		make \
 		openssl \
 		openssl-dev \
-		libressl-dev \
-		pcre2 \
 		pcre2-dev \
 		readline-dev \
 		tar \
+		libressl-dev \
+		pcre2 \
 		binutils \
 		file \
 		file-dev \
@@ -52,50 +34,14 @@ RUN set -eux; \
 		automake \
 	; \
 	\
-	wget -O haproxy.tar.gz "$HAPROXY_URL"; \
 	wget -O keepalived.tar.gz "$KEEPALIVED_URL"; \
-	echo "$HAPROXY_SHA256 *haproxy.tar.gz" | sha256sum -c; \
-	mkdir -p /usr/src/haproxy; \
-	tar -xzf haproxy.tar.gz -C /usr/src/haproxy --strip-components=1; \
-	rm haproxy.tar.gz; \
 	mkdir -p /usr/src/keepalived; \
 	tar -xzf keepalived.tar.gz -C /usr/src/keepalived --strip-components=1; \
 	rm keepalived.tar.gz; \
 	\
-	makeOpts=' \
-		TARGET=linux-musl \
-		USE_GETADDRINFO=1 \
-		USE_LUA=1 LUA_INC=/usr/include/lua5.3 LUA_LIB=/usr/lib/lua5.3 \
-		USE_OPENSSL=1 \
-		USE_PCRE2=1 USE_PCRE2_JIT=1 \
-		USE_PROMEX=1 \
-		\
-		EXTRA_OBJS=" \
-		" \
-	'; \
-	\
-	nproc="$(getconf _NPROCESSORS_ONLN)"; \
-	eval "make -C /usr/src/haproxy -j '$nproc' all $makeOpts"; \
-	eval "make -C /usr/src/haproxy install-bin $makeOpts"; \
-	\
-	mkdir -p /usr/local/etc/haproxy; \
-	cp -R /usr/src/haproxy/examples/errorfiles /usr/local/etc/haproxy/errors; \
-	rm -rf /usr/src/haproxy; \
-	\
-	runDeps="$( \
-		scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
-			| tr ',' '\n' \
-			| sort -u \
-			| awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
-	)"; \
-	apk add --no-network --virtual .haproxy-rundeps $runDeps; \
-	apk del --no-network .build-deps; \
-	\
-# smoke test
-	haproxy -v; \
-	\
-    /usr/src/keepalived/build_setup; \
-    /usr/src/keepalived/configure \
+    cd /usr/src/keepalived; \
+    ./build_setup; \
+    ./configure \
 		--disable-dynamic-linking \
 		--prefix=/usr \
 		--exec-prefix=/usr \
@@ -113,9 +59,9 @@ RUN set -eux; \
 		--enable-snmp-rfc \
 		--enable-nftables \
 		--disable-iptables \
-		--disable-libipset \
     && make && make install \
     && strip /usr/sbin/keepalived \
+    && cd - \
     && rm -rf /usr/src/keepalived
 
 # https://www.haproxy.org/download/1.8/doc/management.txt
@@ -123,10 +69,6 @@ RUN set -eux; \
 # "when the SIGTERM signal is sent to the haproxy process, it immediately quits and all established connections are closed"
 # "graceful stop is triggered when the SIGUSR1 signal is sent to the haproxy process"
 STOPSIGNAL SIGUSR1
-
-COPY docker-entrypoint.sh /usr/local/bin/
-
-COPY ./haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg
 
 # set keepalived as image entrypoint with --dont-fork and --log-console (to make it docker friendly)
 # define /etc/keepalived/keepalived.conf as the configuration file to use
@@ -140,14 +82,8 @@ COPY ./haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg
 ADD entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 
-RUN mkdir -p /config/haproxy
 RUN mkdir -p /config/keepalived
-RUN ln -s /usr/local/etc/haproxy /config/haproxy
 RUN ln -s /etc/keepalived /config/keepalived
 
 # Set our custom entrypoint as the image's default entrypoint
 ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
-
-# USER haproxy
-# Make haproxy use the default configuration file
-CMD ["haproxy", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]
