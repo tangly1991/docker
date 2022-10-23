@@ -87,7 +87,7 @@ RUN set -eux; \
 	haproxy -v; \
 	\
 	cd /usr/src/keepalived \
-	&& apt-get install -y \
+	&& apt-get install -y automake \
     && ls \
     && /usr/src/keepalived/autogen.sh \
     && /usr/src/keepalived/configure \
