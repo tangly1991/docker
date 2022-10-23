@@ -59,7 +59,6 @@ RUN set -eux; \
 		--enable-snmp-rfc \
 		--enable-nftables \
 		--disable-iptables \
-		--disable-libipset \
     && make && make install \
     && strip /usr/sbin/keepalived \
     && cd - \
