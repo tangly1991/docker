@@ -98,11 +98,10 @@ RUN set -eux; \
 		openssl \
 	; \
 	\
-	mkdir -p /usr/src/keepalived; \
-	tar -xzf /keepalived-2.2.7.tar.gz -C /usr/src/keepalived --strip-components=1; \
+	tar -zxvf /keepalived-2.2.7.tar.gz; \
 	rm -rf /keepalived-2.2.7.tar.gz;
 
-RUN cd /usr/src/keepalived/keepalived-2.2.7/ \
+RUN cd /keepalived-2.2.7/ \
     && ./autogen.sh \
     && ./configure \
 		--disable-dynamic-linking \
@@ -126,7 +125,7 @@ RUN cd /usr/src/keepalived/keepalived-2.2.7/ \
     && make && make install \
     && strip /usr/sbin/keepalived \
     && cd - \
-    && rm -rf /usr/src/keepalived/keepalived-2.2.7
+    && rm -rf /keepalived-2.2.7
 
 COPY ./haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg
 
