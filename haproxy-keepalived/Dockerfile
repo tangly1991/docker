@@ -43,6 +43,8 @@ RUN set -eux; \
 		libnl3 \
 		libnl3-dev \
 		musl-dev \
+		libmnl-dev \
+		libnftnl-dev \
 		net-snmp-dev \
 		autoconf \
 		automake \
@@ -90,8 +92,8 @@ RUN set -eux; \
 # smoke test
 	haproxy -v; \
 	\
-    && /usr/src/keepalived/autogen.sh \
-    && /usr/src/keepalived/configure \
+    /usr/src/keepalived/autogen.sh; \
+    /usr/src/keepalived/configure \
 		--disable-dynamic-linking \
 		--prefix=/usr \
 		--exec-prefix=/usr \
@@ -112,7 +114,6 @@ RUN set -eux; \
 		--disable-libipset \
     && make && make install \
     && strip /usr/sbin/keepalived \
-    && cd - \
     && rm -rf /usr/src/keepalived
 
 # https://www.haproxy.org/download/1.8/doc/management.txt
