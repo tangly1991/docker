@@ -33,7 +33,6 @@ RUN set -eux; \
 		libssl-dev \
 		make \
 		wget \
-		automake \
 	; \
 	rm -rf /var/lib/apt/lists/*; \
 	\
@@ -88,6 +87,7 @@ RUN set -eux; \
 	haproxy -v; \
 	\
 	cd /usr/src/keepalived \
+	&& apt-get install -y \
     && ls \
     && /usr/src/keepalived/autogen.sh \
     && /usr/src/keepalived/configure \
