@@ -17,6 +17,7 @@ RUN set -eux; \
 ENV HAPROXY_VERSION 2.7-dev8
 ENV HAPROXY_URL https://www.haproxy.org/download/2.7/src/devel/haproxy-2.7-dev8.tar.gz
 ENV HAPROXY_SHA256 381cba4ec93205c1376eae148924f06f7f485eba9b1f953f89104d997a9e7747
+ENV KEEPALIVED_URL https://www.keepalived.org/software/keepalived-2.2.7.tar.gz
 
 # see https://sources.debian.net/src/haproxy/jessie/debian/rules/ for some helpful navigation of the possible "make" arguments
 RUN set -eux; \
@@ -36,10 +37,14 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*; \
 	\
 	wget -O haproxy.tar.gz "$HAPROXY_URL"; \
+	wget -O keepalived.tar.gz "$KEEPALIVED_URL"; \
 	echo "$HAPROXY_SHA256 *haproxy.tar.gz" | sha256sum -c; \
 	mkdir -p /usr/src/haproxy; \
 	tar -xzf haproxy.tar.gz -C /usr/src/haproxy --strip-components=1; \
 	rm haproxy.tar.gz; \
+	mkdir -p /usr/src/keepalived; \
+	tar -xzf keepalived.tar.gz -C /usr/src/keepalived --strip-components=1; \
+	rm keepalived.tar.gz; \
 	\
 	makeOpts=' \
 		TARGET=linux-glibc \
@@ -81,19 +86,7 @@ RUN set -eux; \
 # smoke test
 	haproxy -v
 
-# https://www.haproxy.org/download/1.8/doc/management.txt
-# "4. Stopping and restarting HAProxy"
-# "when the SIGTERM signal is sent to the haproxy process, it immediately quits and all established connections are closed"
-# "graceful stop is triggered when the SIGUSR1 signal is sent to the haproxy process"
-STOPSIGNAL SIGUSR1
-
-COPY docker-entrypoint.sh /usr/local/bin/
-
-ADD keepalived-2.2.7.tar.gz /
-
-RUN tar -zxvf /keepalived-2.2.7.tar.gz;
-
-RUN cd /keepalived-2.2.7/ \
+RUN cd /usr/src/keepalived \
     && ./autogen.sh \
     && ./configure \
 		--disable-dynamic-linking \
@@ -117,8 +110,15 @@ RUN cd /keepalived-2.2.7/ \
     && make && make install \
     && strip /usr/sbin/keepalived \
     && cd - \
-    && rm -rf /keepalived-2.2.7 \
-    && rm -rf /keepalived-2.2.7.tar.gz;
+    && rm -rf /usr/src/keepalived
+
+# https://www.haproxy.org/download/1.8/doc/management.txt
+# "4. Stopping and restarting HAProxy"
+# "when the SIGTERM signal is sent to the haproxy process, it immediately quits and all established connections are closed"
+# "graceful stop is triggered when the SIGUSR1 signal is sent to the haproxy process"
+STOPSIGNAL SIGUSR1
+
+COPY docker-entrypoint.sh /usr/local/bin/
 
 COPY ./haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg
 
