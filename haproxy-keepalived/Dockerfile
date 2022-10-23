@@ -31,6 +31,7 @@ RUN set -eux; \
 		make \
 		openssl \
 		openssl-dev \
+		libressl-dev \
 		pcre2 \
 		pcre2-dev \
 		readline-dev \
@@ -93,7 +94,7 @@ RUN set -eux; \
 # smoke test
 	haproxy -v; \
 	\
-    /usr/src/keepalived/autogen.sh; \
+    /usr/src/keepalived/build_setup; \
     /usr/src/keepalived/configure \
 		--disable-dynamic-linking \
 		--prefix=/usr \
