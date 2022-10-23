@@ -33,10 +33,7 @@ RUN set -eux; \
 		libssl-dev \
 		make \
 		wget \
-		aclocal \
-		autoheader \
 		automake \
-		autoreconf \
 	; \
 	rm -rf /var/lib/apt/lists/*; \
 	\
