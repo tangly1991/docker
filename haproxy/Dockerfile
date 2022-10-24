@@ -86,7 +86,6 @@ RUN set -eux; \
 STOPSIGNAL SIGUSR1
 
 COPY docker-entrypoint.sh /usr/local/bin/
-COPY haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 ENTRYPOINT ["docker-entrypoint.sh"]
 
