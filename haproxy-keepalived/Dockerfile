@@ -82,8 +82,9 @@ STOPSIGNAL SIGUSR1
 ADD entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 
-RUN if [ -f /usr/local/etc/haproxy/haproxy.cfg ];then \
-        mv /usr/local/etc/haproxy/haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg.bak \
+RUN if [ -f /usr/local/etc/haproxy/haproxy.cfg ]; \
+    then \
+        mv /usr/local/etc/haproxy/haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg.bak; \
     fi
 
 COPY haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg
