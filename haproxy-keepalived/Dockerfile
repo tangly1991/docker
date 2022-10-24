@@ -82,6 +82,8 @@ STOPSIGNAL SIGUSR1
 ADD entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 
+COPY haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg
+
 RUN mkdir -p /config/keepalived
 RUN ln -s /etc/keepalived /config/keepalived
 
