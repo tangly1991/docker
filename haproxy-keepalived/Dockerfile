@@ -79,8 +79,8 @@ STOPSIGNAL SIGUSR1
 
 # Include our custom entrypoint that will the the job of lifting
 # rsyslog alongside haproxy.
-ADD entrypoint.sh /
-RUN chmod +x /entrypoint.sh
+ADD entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 RUN if [ -f "/usr/local/etc/haproxy/haproxy.cfg" ]; \
     then \
@@ -93,6 +93,6 @@ RUN mkdir -p /config/keepalived
 RUN ln -s /etc/keepalived /config/keepalived
 
 # Set our custom entrypoint as the image's default entrypoint
-ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
 
 CMD ["haproxy", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]
