@@ -89,9 +89,6 @@ RUN if [ -f "/usr/local/etc/haproxy/haproxy.cfg" ]; \
 
 COPY haproxy.cfg /usr/local/etc/haproxy/
 
-COPY keepalived.conf /etc/keepalived/
-RUN chmod 755 /etc/keepalived/keepalived.conf
-
 RUN mkdir -p /config/keepalived
 RUN ln -s /etc/keepalived /config/keepalived
 
