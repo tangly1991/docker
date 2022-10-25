@@ -5,7 +5,8 @@ ENV KEEPALIVED_URL https://www.keepalived.org/software/keepalived-2.2.7.tar.gz
 # see https://sources.debian.net/src/haproxy/jessie/debian/rules/ for some helpful navigation of the possible "make" arguments
 RUN set -eux; \
 	\
-	apk add --no-cache --virtual .build-deps \
+	savedAptMark="$(apt-mark showmanual)"; \
+	apt-get update && apt-get install -y --no-install-recommends \
 		gcc \
 		libc-dev \
 		linux-headers \
