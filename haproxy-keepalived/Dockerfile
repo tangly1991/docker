@@ -8,11 +8,14 @@ RUN set -eux; \
 	savedAptMark="$(apt-mark showmanual)"; \
 	apt-get update && apt-get install -y --no-install-recommends \
 		pkg-config \
+		ca-certificates \
 		curl \
 		gcc \
 		gcc \
 		libc-dev \
+		libc6-dev \
 		lua5.3-dev \
+		libpcre2-dev \
 		make \
 		openssl \
 		libssl-dev \
