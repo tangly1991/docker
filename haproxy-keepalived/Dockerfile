@@ -15,6 +15,7 @@ RUN set -eux; \
 		libc-dev \
 		libc6-dev \
 		lua5.3-dev \
+		liblua5.3-dev \
 		libpcre2-dev \
 		make \
 		openssl \
