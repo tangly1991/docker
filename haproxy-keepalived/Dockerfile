@@ -7,29 +7,26 @@ RUN set -eux; \
 	\
 	savedAptMark="$(apt-mark showmanual)"; \
 	apt-get update && apt-get install -y --no-install-recommends \
+		pkg-config \
+		curl \
+		gcc \
 		gcc \
 		libc-dev \
-		linux-headers \
 		lua5.3-dev \
 		make \
 		openssl \
-		openssl-dev \
-		pcre2-dev \
-		readline-dev \
+		libssl-dev \
+		libnl-3-dev \
+		libnl-genl-3-dev \
+		libsnmp-dev \
+		libnl-route-3-dev \
+		libnfnetlink-dev \
 		tar \
-		libressl-dev \
-		pcre2 \
 		binutils \
 		file \
-		file-dev \
-		glib \
-		glib-dev \
-		libnl3 \
-		libnl3-dev \
 		musl-dev \
 		libmnl-dev \
 		libnftnl-dev \
-		net-snmp-dev \
 		libtool \
 		autoconf \
 		automake \
