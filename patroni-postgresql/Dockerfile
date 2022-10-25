@@ -14,10 +14,13 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && pip3 install 'git+https://github.com/zalando/patroni.git#egg=patroni[kubernetes]' \
     && PGHOME=/home/postgres \
     && mkdir -p $PGHOME \
+    && mkdir -p /home/patroni/log \
     && chown postgres $PGHOME \
+    && chown postgres /home/patroni/log \
     && sed -i "s|/var/lib/postgresql.*|$PGHOME:/bin/bash|" /etc/passwd \
     # Set permissions for OpenShift
     && chmod 775 $PGHOME \
+    && chmod 775 /home/patroni/log \
     && chmod 664 /etc/passwd \
     # Clean up
     && apt-get remove -y git python3-pip python3-wheel \
