@@ -47,6 +47,8 @@ vrrp_instance VI_1 {
 }
 __EOF__
 
+  chmod 644 /etc/keepalived/keepalived.conf
+
   # start keepalived
   exec /usr/sbin/keepalived --dont-fork --log-console -n -l -D -f /etc/keepalived/keepalived.conf
 }
