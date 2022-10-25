@@ -28,6 +28,7 @@ RUN set -eux; \
 		libmnl-dev \
 		libnftnl-dev \
 		libtool \
+		wget \
 		autoconf \
 		automake \
 	; \
