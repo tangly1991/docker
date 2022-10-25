@@ -17,7 +17,7 @@ RUN set -eux; \
 		lua5.3-dev \
 		liblua5.3-dev \
 		libpcre2-dev \
-		libglib2.0-2.0 \
+		libglib2.0-dev \
 		make \
 		openssl \
 		libssl-dev \
