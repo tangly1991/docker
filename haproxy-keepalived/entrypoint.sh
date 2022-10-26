@@ -63,7 +63,7 @@ start_rsyslogd() {
 # Starts the load-balancer (haproxy) with
 # whatever arguments we pass to it ("$@")
 start_haproxy() {
-  exec /docker-entrypoint.sh "$@"
+  exec /usr/local/bin/docker-entrypoint.sh "$@"
 }
 
 main "$@"
