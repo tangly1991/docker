@@ -65,6 +65,9 @@ RUN apk add --no-cache --virtual build-deps ca-certificates gcc libc-dev \
 
 COPY haproxy.cfg /usr/local/etc/haproxy
 COPY docker-entrypoint.sh /
+RUN chmod +x /docker-entrypoint.sh
+
+RUN cd / && ls -l && cd /usr/local/etc/haproxy && ls -l && cd -
 
 STOPSIGNAL SIGUSR1
 
