@@ -2,6 +2,8 @@ FROM registry.cn-hangzhou.aliyuncs.com/ame/haproxy:2.7-dev8
 
 ENV KEEPALIVED_URL https://www.keepalived.org/software/keepalived-2.2.7.tar.gz
 
+RUN cd / && ls -l && cd -
+
 # see https://sources.debian.net/src/haproxy/jessie/debian/rules/ for some helpful navigation of the possible "make" arguments
 RUN set -eux; \
 	\
