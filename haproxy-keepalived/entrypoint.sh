@@ -8,7 +8,7 @@ readonly RSYSLOG_PID="/var/run/rsyslogd.pid"
 main() {
   # start_keepalived
   # start_rsyslogd
-  start_haproxy "$@"
+  # start_haproxy "$@"
 }
 
 # make sure we have keepalived's pid file not created before
