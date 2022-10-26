@@ -66,4 +66,4 @@ start_haproxy() {
   exec /usr/local/bin/docker-entrypoint.sh "$@"
 }
 
-# main "$@"
+main "$@"
