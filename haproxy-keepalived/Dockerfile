@@ -99,6 +99,6 @@ RUN mkdir -p /config/keepalived
 RUN ln -s /etc/keepalived /config/keepalived
 
 # Set our custom entrypoint as the image's default entrypoint
-ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
+# ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
 
-CMD ["haproxy", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]
+# CMD ["haproxy", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]
