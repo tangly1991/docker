@@ -2,8 +2,6 @@ FROM registry.cn-hangzhou.aliyuncs.com/ame/haproxy:2.7-dev8
 
 ENV KEEPALIVED_URL https://www.keepalived.org/software/keepalived-2.2.7.tar.gz
 
-RUN cd / && ls -l && cd -
-
 # see https://sources.debian.net/src/haproxy/jessie/debian/rules/ for some helpful navigation of the possible "make" arguments
 RUN set -eux; \
 	\
@@ -76,18 +74,21 @@ RUN set -eux; \
 # Include our custom entrypoint that will the the job of lifting
 # rsyslog alongside haproxy.
 COPY entrypoint.sh /
+RUN chmod +x /entrypoint.sh
 
 RUN if [ -f "/usr/local/etc/haproxy/haproxy.cfg" ]; \
     then \
         mv /usr/local/etc/haproxy/haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg.bak; \
     fi
 
-COPY haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg
+COPY haproxy.cfg /usr/local/etc/haproxy
 
 RUN mkdir -p /config/haproxy
 RUN mkdir -p /config/keepalived
 RUN ln -s /usr/local/etc/haproxy/haproxy /config/haproxy
 RUN ln -s /etc/keepalived /config/keepalived
+
+RUN cd / && ls -l && cd /usr/local/etc/haproxy && ls -l && cd -
 
 # https://www.haproxy.org/download/1.8/doc/management.txt
 # "4. Stopping and restarting HAProxy"
