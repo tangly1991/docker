@@ -14,4 +14,4 @@ if [ "$1" = 'haproxy' ]; then
 	set -- haproxy -W -db "$@"
 fi
 
-exec gosu haproxy "$@"
+exec "$@"
