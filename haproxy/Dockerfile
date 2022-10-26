@@ -6,19 +6,22 @@
 
 FROM debian:bullseye-slim
 
+RUN set -ex; \
+	if ! command -v gpg > /dev/null; then \
+		apt-get update; \
+		apt-get install -y --no-install-recommends \
+			gnupg \
+			dirmngr \
+		; \
+		rm -rf /var/lib/apt/lists/*; \
+	fi
+
 # roughly, https://salsa.debian.org/haproxy-team/haproxy/-/blob/732b97ae286906dea19ab5744cf9cf97c364ac1d/debian/haproxy.postinst#L5-6
 RUN set -eux; \
-	groupadd --gid 99 --system haproxy; \
-	useradd \
-		--gid haproxy \
-		--home-dir /var/lib/haproxy \
-		--no-create-home \
-		--system \
-		--uid 99 \
-		haproxy \
-	; \
-	mkdir /var/lib/haproxy; \
-	chown haproxy:haproxy /var/lib/haproxy
+	groupadd -r haproxy --gid=999; \
+	useradd  -r -g haproxy --uid=999 --home-dir=/var/lib/haproxy --shell=/bin/bash haproxy; \
+	mkdir -p /var/lib/haproxy; \
+	chown -R haproxy:haproxy /var/lib/haproxy
 
 ENV HAPROXY_VERSION 2.7-dev8
 ENV HAPROXY_URL https://www.haproxy.org/download/2.7/src/devel/haproxy-2.7-dev8.tar.gz
@@ -28,7 +31,8 @@ ENV HAPROXY_SHA256 381cba4ec93205c1376eae148924f06f7f485eba9b1f953f89104d997a9e7
 RUN set -eux; \
 	\
 	savedAptMark="$(apt-mark showmanual)"; \
-	apt-get update && apt-get install -y --no-install-recommends \
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
 		ca-certificates \
 		gcc \
 		libc6-dev \
@@ -86,14 +90,14 @@ RUN set -eux; \
 # smoke test
 	haproxy -v
 
+COPY docker-entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["docker-entrypoint.sh"]
+
 # https://www.haproxy.org/download/1.8/doc/management.txt
 # "4. Stopping and restarting HAProxy"
 # "when the SIGTERM signal is sent to the haproxy process, it immediately quits and all established connections are closed"
 # "graceful stop is triggered when the SIGUSR1 signal is sent to the haproxy process"
 STOPSIGNAL SIGUSR1
-
-COPY docker-entrypoint.sh /usr/local/bin/
-ENTRYPOINT ["docker-entrypoint.sh"]
 
 # USER haproxy
 CMD ["haproxy", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]
