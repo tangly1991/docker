@@ -105,7 +105,7 @@ RUN set -eux; \
 
 COPY docker-entrypoint.sh /
 RUN chmod +x /docker-entrypoint.sh
-ENTRYPOINT ["/docker-entrypoint.sh"]
+# ENTRYPOINT ["/docker-entrypoint.sh"]
 
 # https://www.haproxy.org/download/1.8/doc/management.txt
 # "4. Stopping and restarting HAProxy"
@@ -114,4 +114,4 @@ ENTRYPOINT ["/docker-entrypoint.sh"]
 STOPSIGNAL SIGUSR1
 
 # USER haproxy
-CMD ["haproxy", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]
+# CMD ["haproxy", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]
