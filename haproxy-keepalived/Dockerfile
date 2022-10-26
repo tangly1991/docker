@@ -1,4 +1,4 @@
-FROM registry.cn-hangzhou.aliyuncs.com/ame/haproxy:v2.7-dev8
+FROM registry.cn-hangzhou.aliyuncs.com/ame/haproxy:2.7-dev8
 
 ENV KEEPALIVED_URL https://www.keepalived.org/software/keepalived-2.2.7.tar.gz
 
