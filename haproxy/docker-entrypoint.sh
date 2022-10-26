@@ -1,5 +1,5 @@
-#!/usr/bin/env bash
-set -Eeo pipefail
+#!/bin/sh
+set -e
 
 # first arg is `-f` or `--some-option`
 if [ "${1#-}" != "$1" ]; then
@@ -14,4 +14,4 @@ if [ "$1" = 'haproxy' ]; then
 	set -- haproxy -W -db "$@"
 fi
 
-exec "$@"
+exec gosu haproxy "$@"
