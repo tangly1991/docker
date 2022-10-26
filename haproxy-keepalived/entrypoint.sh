@@ -13,7 +13,7 @@ main() {
 
 # make sure we have keepalived's pid file not created before
 start_keepalived() {
-  cat > /etc/keepalived/keepalived.conf <<__EOF__
+  cat > /config/keepalived/keepalived.conf <<__EOF__
 global_defs {
     script_user root
     enable_script_security
@@ -47,10 +47,11 @@ vrrp_instance VI_1 {
 }
 __EOF__
 
-  chmod 644 /etc/keepalived/keepalived.conf
+  chown -R haproxy:haproxy /config/keepalived/keepalived.conf
+  chmod 644 /config/keepalived/keepalived.conf
 
   # start keepalived
-  exec /usr/sbin/keepalived --dont-fork --log-console -n -l -D -f /etc/keepalived/keepalived.conf
+  exec /usr/sbin/keepalived --dont-fork --log-console -n -l -D -f /config/keepalived/keepalived.conf
 }
 
 # make sure we have rsyslogd's pid file not created before
