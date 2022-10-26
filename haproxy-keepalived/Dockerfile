@@ -93,7 +93,7 @@ RUN if [ -f "/usr/local/etc/haproxy/haproxy.cfg" ]; \
 
 COPY haproxy.cfg /usr/local/etc/haproxy/
 
-RUN cd /etc && ls -l && cd -
+RUN cd /etc/keepalived && ls -l && cd -
 RUN mkdir -p /config/keepalived
 RUN ln -s /etc/keepalived /config/keepalived
 
