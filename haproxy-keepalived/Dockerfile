@@ -93,8 +93,9 @@ RUN if [ -f "/usr/local/etc/haproxy/haproxy.cfg" ]; \
 
 COPY haproxy.cfg /usr/local/etc/haproxy/
 
+RUN cd /etc && ll -a && cd -
 RUN mkdir -p /config/keepalived
-# RUN ln -s /etc/keepalived /config/keepalived
+RUN ln -s /etc/keepalived /config/keepalived
 
 # Set our custom entrypoint as the image's default entrypoint
 ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
