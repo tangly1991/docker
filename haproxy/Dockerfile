@@ -104,6 +104,7 @@ RUN set -eux; \
 	haproxy -v
 
 COPY docker-entrypoint.sh /
+RUN chmod +x /docker-entrypoint.sh
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
 # https://www.haproxy.org/download/1.8/doc/management.txt
