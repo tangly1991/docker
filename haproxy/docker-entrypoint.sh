@@ -1,5 +1,5 @@
-#!/bin/sh
-set -e
+#!/usr/bin/env bash
+set -Eeo pipefail
 
 # first arg is `-f` or `--some-option`
 if [ "${1#-}" != "$1" ]; then
