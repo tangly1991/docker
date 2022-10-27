@@ -7,6 +7,7 @@ RUN set -eux; \
 	\
 	apk add --no-cache --virtual .build-deps \
 		vim \
+		e2fsprogs \
 		gcc \
 		libc-dev \
 		linux-headers \
@@ -90,7 +91,7 @@ RUN ln -s /usr/local/etc/haproxy /config/haproxy
 RUN ln -s /etc/keepalived /config/keepalived
 
 RUN cd / && ls -l && cd - && cd /usr/local/etc && ls -l && cd - && cd /usr/local/etc/haproxy && ls -l && cd - && \
-    cd /var/lib && ls -l && cd - && cd /var/lib/haproxy-pid && ls -l && cd -
+    cd /var/lib && ls -l && cd - && cd /var/lib/haproxy-pid && ls -l && cd - && lsattr /etc/keepalived
 
 # https://www.haproxy.org/download/1.8/doc/management.txt
 # "4. Stopping and restarting HAProxy"
