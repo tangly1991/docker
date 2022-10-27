@@ -98,6 +98,6 @@ RUN cd / && ls -l && cd - && cd /usr/local/etc && ls -l && cd - && cd /usr/local
 STOPSIGNAL SIGUSR1
 
 # Set our custom entrypoint as the image's default entrypoint
-ENTRYPOINT ["/entrypoint.sh"]
+# ENTRYPOINT ["/entrypoint.sh"]
 
-CMD ["haproxy", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]
+# CMD ["haproxy", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]
