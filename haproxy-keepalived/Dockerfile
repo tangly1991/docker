@@ -85,7 +85,7 @@ COPY haproxy.cfg /usr/local/etc/haproxy
 
 RUN mkdir -p /config/haproxy
 RUN mkdir -p /config/keepalived
-RUN ln -s /usr/local/etc/haproxy/haproxy /config/haproxy
+RUN ln -s /usr/local/etc/haproxy /config/haproxy
 RUN ln -s /etc/keepalived /config/keepalived
 
 RUN cd / && ls -l && cd - && cd /usr/local/etc && ls -l && cd - && cd /usr/local/etc/haproxy && ls -l && cd - && \
