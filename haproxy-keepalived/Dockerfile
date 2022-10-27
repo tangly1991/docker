@@ -6,6 +6,7 @@ ENV KEEPALIVED_URL https://www.keepalived.org/software/keepalived-2.2.7.tar.gz
 RUN set -eux; \
 	\
 	apk add --no-cache --virtual .build-deps \
+		vim \
 		gcc \
 		libc-dev \
 		linux-headers \
