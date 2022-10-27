@@ -88,7 +88,7 @@ RUN mkdir -p /config/keepalived
 RUN ln -s /usr/local/etc/haproxy/haproxy /config/haproxy
 RUN ln -s /etc/keepalived /config/keepalived
 
-RUN cd / && ls -l && cd - && cd /usr/local/etc/haproxy && ls -l && cd - && cd /var && ls -l && cd - && cd /var/run && ls -l && cd -
+RUN cd / && ls -l && cd - && cd /usr/local/etc && ls -l && cd - && cd /usr/local/etc/haproxy && ls -l && cd -
 
 # https://www.haproxy.org/download/1.8/doc/management.txt
 # "4. Stopping and restarting HAProxy"
