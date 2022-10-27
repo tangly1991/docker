@@ -52,6 +52,9 @@ RUN apk add --no-cache --virtual build-deps ca-certificates gcc libc-dev \
     mkdir -p /var/lib/haproxy && \
     chown "$HAPROXY_UID:$HAPROXY_GID" /var/lib/haproxy && \
     mkdir -p /usr/local/etc/haproxy && \
+    mkdir -p /var/lib/haproxy-pid && \
+    chown "$HAPROXY_UID:$HAPROXY_GID" /var/lib/haproxy-pid && \
+    chmod -R 777 /var/lib/haproxy-pid && \
     ln -s /usr/local/etc/haproxy /etc/haproxy && \
     cp -R /tmp/haproxy/examples/errorfiles /usr/local/etc/haproxy/errors && \
     rm -rf /tmp/haproxy && \
