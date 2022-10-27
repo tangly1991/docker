@@ -1,7 +1,5 @@
-#!/bin/bash
-
-set -o errexit
-set -o nounset
+#!/bin/sh
+set -e
 
 readonly RSYSLOG_PID="/var/run/rsyslogd.pid"
 
