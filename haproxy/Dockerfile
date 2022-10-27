@@ -67,7 +67,7 @@ COPY haproxy.cfg /usr/local/etc/haproxy
 COPY docker-entrypoint.sh /
 RUN chmod +x /docker-entrypoint.sh
 
-RUN cd / && ls -l && cd /usr/local/etc/haproxy && ls -l && cd -
+RUN cd / && ls -l && cd - && cd /usr/local/etc/haproxy && ls -l && cd -
 
 STOPSIGNAL SIGUSR1
 
