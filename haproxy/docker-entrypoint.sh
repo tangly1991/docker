@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-rm -rf /usr/local/etc/haproxy/haproxy.pid
+rm -rf /var/lib/haproxy-pid/haproxy.pid
 
 # first arg is `-f` or `--some-option`
 if [ "${1#-}" != "$1" ]; then
