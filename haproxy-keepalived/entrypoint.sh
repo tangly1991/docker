@@ -47,7 +47,7 @@ vrrp_instance VI_1 {
 __EOF__
 
   # start keepalived
-  exec /usr/sbin/keepalived --dont-fork --log-console -n -l -D -f /usr/local/etc/keepalived/keepalived.conf
+  # exec /usr/sbin/keepalived --dont-fork --log-console -n -l -D -f /usr/local/etc/keepalived/keepalived.conf
 }
 
 # make sure we have rsyslogd's pid file not created before
