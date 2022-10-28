@@ -64,7 +64,7 @@ RUN apk add --no-cache --virtual build-deps ca-certificates vim gcc libc-dev \
     touch /usr/local/etc/haproxy/dataplaneapi.hcl && \
     chown "$HAPROXY_UID:$HAPROXY_GID" /usr/local/etc/haproxy/dataplaneapi.hcl && \
     apk del build-deps && \
-    apk add --no-cache openssl zlib lua5.3-libs pcre2 && \
+    apk add --no-cache libressl-dev zlib lua5.3-libs pcre2 && \
     rm -f /var/cache/apk/*
 
 COPY haproxy.cfg /usr/local/etc/haproxy
