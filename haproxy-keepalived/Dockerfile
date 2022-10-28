@@ -13,7 +13,7 @@ RUN set -eux; \
 		linux-headers \
 		lua5.3-dev \
 		make \
-		openssl \
+#		openssl \
 #		openssl-dev \
 		pcre2-dev \
 		readline-dev \
