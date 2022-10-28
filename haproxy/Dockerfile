@@ -33,7 +33,7 @@ ENV HAPROXY_GID haproxy
 COPY --from=builder /dataplaneapi /usr/local/bin/dataplaneapi
 
 RUN apk add --no-cache --virtual build-deps ca-certificates vim gcc libc-dev \
-    linux-headers lua5.3-dev make libressl-dev pcre2-dev tar \
+    linux-headers lua5.3-dev make openssl libressl-dev pcre2-dev tar \
     zlib-dev curl shadow ca-certificates && \
     curl -sfSL "${HAPROXY_SRC_URL}/${HAPROXY_BRANCH}/src/devel/haproxy-${HAPROXY_MINOR}.tar.gz" -o haproxy.tar.gz && \
     echo "$HAPROXY_SHA256 *haproxy.tar.gz" | sha256sum -c - && \
@@ -64,7 +64,7 @@ RUN apk add --no-cache --virtual build-deps ca-certificates vim gcc libc-dev \
     touch /usr/local/etc/haproxy/dataplaneapi.hcl && \
     chown "$HAPROXY_UID:$HAPROXY_GID" /usr/local/etc/haproxy/dataplaneapi.hcl && \
     apk del build-deps && \
-    apk add --no-cache libressl-dev zlib lua5.3-libs pcre2 && \
+    apk add --no-cache openssl libressl-dev zlib lua5.3-libs pcre2 && \
     rm -f /var/cache/apk/*
 
 COPY haproxy.cfg /usr/local/etc/haproxy
