@@ -13,7 +13,7 @@ RUN set -eux; \
 		lua5.3-dev \
 		make \
 		pcre2-dev \
-		#readline-dev \
+		readline-dev \
 		tar \
 		pcre2 \
 		binutils \
@@ -24,9 +24,9 @@ RUN set -eux; \
 		libnl3 \
 		libnl3-dev \
 		musl-dev \
-		#libnftnl-dev \
-		net-snmp-dev \
-		#libtool \
+		libnftnl-dev \
+		#net-snmp-dev \
+		libtool \
 		autoconf \
 		automake \
 	; \
