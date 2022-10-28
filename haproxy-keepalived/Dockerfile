@@ -9,17 +9,17 @@ RUN set -eux; \
 		vim \
 		gcc \
 		#libc-dev \
-		linux-headers \
+		#linux-headers \
 		lua5.3-dev \
 		make \
 		#pcre2-dev \
 		readline-dev \
 		tar \
 		pcre2 \
-		binutils \
+		#binutils \
 		file \
 		#file-dev \
-		glib \
+		#glib \
 		#glib-dev \
 		#libnl3 \
 		#libnl3-dev \
