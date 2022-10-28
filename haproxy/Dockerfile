@@ -1,4 +1,4 @@
-FROM golang:alpine3.16 AS builder
+FROM golang:latest AS builder
 
 ENV DATAPLANE_MINOR 2.6.1
 ENV DATAPLANE_URL https://github.com/haproxytech/dataplaneapi.git
@@ -8,7 +8,7 @@ RUN cd "${GOPATH}/src/github.com/haproxytech/dataplaneapi" && \
     git checkout "v${DATAPLANE_MINOR}" && \
     make build && cp build/dataplaneapi /dataplaneapi
 
-FROM alpine:3.16.2
+FROM alpine:latest
 
 MAINTAINER Dinko Korunic <dkorunic@haproxy.com>
 
