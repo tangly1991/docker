@@ -21,7 +21,7 @@ RUN set -eux; \
 		#file-dev \
 		glib \
 		#glib-dev \
-		libnl3 \
+		#libnl3 \
 		#libnl3-dev \
 		#musl-dev \
 		#libnftnl-dev \
