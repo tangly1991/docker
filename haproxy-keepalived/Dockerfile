@@ -40,7 +40,7 @@ RUN set -eux; \
 	mkdir -p /usr/src/keepalived; \
 	mkdir -p /usr/local/etc/keepalived; \
 	chown "haproxy:haproxy" /usr/local/etc/keepalived; \
-	chmod -R 777 /usr/local/etc/keepalived; \
+	chmod -R 744 /usr/local/etc/keepalived; \
 	tar -xzf keepalived.tar.gz -C /usr/src/keepalived --strip-components=1; \
 	rm keepalived.tar.gz; \
 	\
