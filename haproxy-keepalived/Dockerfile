@@ -14,7 +14,7 @@ RUN set -eux; \
 		lua5.3-dev \
 		make \
 		openssl \
-		openssl-dev \
+#		openssl-dev \
 		pcre2-dev \
 		readline-dev \
 		tar \
