@@ -26,7 +26,7 @@ RUN set -eux; \
 		musl-dev \
 		libnftnl-dev \
 		net-snmp-tools \
-		net-snmp-config \
+		net-snmp \
 		snmptt \
 		nmap \
 		libtool \
