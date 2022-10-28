@@ -12,11 +12,9 @@ RUN set -eux; \
 		linux-headers \
 		lua5.3-dev \
 		make \
-		openssl \
 		pcre2-dev \
 		readline-dev \
 		tar \
-		libressl-dev \
 		pcre2 \
 		binutils \
 		file \
