@@ -11,7 +11,7 @@ main() {
 
 # make sure we have keepalived's pid file not created before
 start_keepalived() {
-  bash -c "cat > /etc/keepalived/keepalived.conf" <<__EOF__
+  cat > /usr/local/etc/keepalived/keepalived.conf <<__EOF__
 global_defs {
     script_user root
     enable_script_security
