@@ -45,11 +45,8 @@ vrrp_instance VI_1 {
 }
 __EOF__
 
-  chown -R haproxy:haproxy /etc/keepalived/keepalived.conf
-  chmod 644 /etc/keepalived/keepalived.conf
-
   # start keepalived
-  exec /usr/sbin/keepalived --dont-fork --log-console -n -l -D -f /etc/keepalived/keepalived.conf
+  exec /usr/sbin/keepalived --dont-fork --log-console -n -l -D -f /usr/local/etc/keepalived/keepalived.conf
 }
 
 # make sure we have rsyslogd's pid file not created before
@@ -61,7 +58,7 @@ start_rsyslogd() {
 # Starts the load-balancer (haproxy) with
 # whatever arguments we pass to it ("$@")
 start_haproxy() {
-  exec /usr/local/bin/docker-entrypoint.sh "$@"
+  exec /docker-entrypoint.sh "$@"
 }
 
 main "$@"
