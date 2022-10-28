@@ -8,7 +8,7 @@ RUN cd "${GOPATH}/src/github.com/haproxytech/dataplaneapi" && \
     git checkout "v${DATAPLANE_MINOR}" && \
     make build && cp build/dataplaneapi /dataplaneapi
 
-FROM alpine:edge
+FROM alpine:3.16
 
 MAINTAINER Dinko Korunic <dkorunic@haproxy.com>
 
