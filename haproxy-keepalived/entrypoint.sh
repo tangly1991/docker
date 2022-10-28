@@ -13,6 +13,7 @@ main() {
 start_keepalived() {
   cat > /usr/local/etc/keepalived/keepalived.conf <<__EOF__
 global_defs {
+    router_id ${ROUTER_ID}
     script_user root
     enable_script_security
 }
