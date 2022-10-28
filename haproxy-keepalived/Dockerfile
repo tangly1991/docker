@@ -22,9 +22,9 @@ RUN set -eux; \
 		glib \
 		glib-dev \
 		libnl3 \
-		libnl3-dev \
-		musl-dev \
-		libnftnl-dev \
+		#libnl3-dev \
+		#musl-dev \
+		#libnftnl-dev \
 		net-snmp-dev \
 		libtool \
 		autoconf \
