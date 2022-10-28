@@ -8,19 +8,19 @@ RUN set -eux; \
 	apk add --no-cache --virtual .build-deps \
 		vim \
 		gcc \
-		libc-dev \
+		#libc-dev \
 		linux-headers \
 		lua5.3-dev \
 		make \
-		pcre2-dev \
+		#pcre2-dev \
 		readline-dev \
 		tar \
 		pcre2 \
 		binutils \
 		file \
-		file-dev \
+		#file-dev \
 		glib \
-		glib-dev \
+		#glib-dev \
 		libnl3 \
 		#libnl3-dev \
 		#musl-dev \
