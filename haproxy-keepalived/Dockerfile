@@ -24,9 +24,9 @@ RUN set -eux; \
 		libnl3 \
 		libnl3-dev \
 		musl-dev \
-		libnftnl-dev \
+		#libnftnl-dev \
 		net-snmp-dev \
-		libtool \
+		#libtool \
 		autoconf \
 		automake \
 	; \
