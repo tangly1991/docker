@@ -8,11 +8,11 @@ RUN set -eux; \
 	apk add --no-cache --virtual .build-deps \
 		vim \
 		gcc \
-		#libc-dev \
-		#linux-headers \
+		libc-dev \
+		linux-headers \
 		lua5.3-dev \
 		make \
-		#pcre2-dev \
+		pcre2-dev \
 		readline-dev \
 		tar \
 		pcre2 \
