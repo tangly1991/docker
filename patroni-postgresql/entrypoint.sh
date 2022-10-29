@@ -25,7 +25,7 @@ restapi:
 
 etcd3:
   protocol: "http"
-  url: ${PATRONI_ETCD_POD_IP}:2379
+  host: ${PATRONI_ETCD_POD_IP}:2379
 
 bootstrap:
   dcs:
