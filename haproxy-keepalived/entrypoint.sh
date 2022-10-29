@@ -5,7 +5,7 @@ readonly RSYSLOG_PID="/var/run/rsyslogd.pid"
 
 main() {
   start_keepalived
-  start_rsyslogd
+  # start_rsyslogd
   start_haproxy "$@"
 }
 
