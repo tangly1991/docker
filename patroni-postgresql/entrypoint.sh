@@ -23,8 +23,9 @@ restapi:
   listen: 0.0.0.0:8008
   connect_address: ${PATRONI_POD_IP}:8008
 
-etcd:
-  host: ${PATRONI_ETCD_POD_IP}:2379
+etcd3:
+  protocol: "http"
+  url: ${PATRONI_ETCD_POD_IP}:2379
 
 bootstrap:
   dcs:
