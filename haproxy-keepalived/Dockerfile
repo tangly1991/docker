@@ -8,6 +8,7 @@ RUN set -eux; \
 	apk add --no-cache --virtual .build-deps \
 		rsyslog \
 		vim \
+		telnet \
 		gcc \
 		libc-dev \
 		linux-headers \
