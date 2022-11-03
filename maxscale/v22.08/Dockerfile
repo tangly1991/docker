@@ -1,7 +1,7 @@
 # vim:set ft=dockerfile:
 FROM rockylinux:9
 
-ENV MXS_VERSION=22.08.22
+ENV MXS_VERSION=22.08.2
 
 RUN groupadd maxscale; \
     useradd -g maxscale maxscale
