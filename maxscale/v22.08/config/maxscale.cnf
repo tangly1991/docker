@@ -1,0 +1,131 @@
+[maxscale]
+# 设置线程数量 auto将设置为cpu核数
+threads=auto
+# 非https配置 web页面
+admin_secure_gui=false
+
+# this enables external access to the REST API outside of localhost
+# please review / modify for any public / non development environments
+admin_host=0.0.0.0
+
+# 日志目录
+logdir=/data/maxscale/log/
+# 数据目录
+datadir=/data/maxscale/data/
+# pid文件
+piddir=/data/maxscale/
+# 模块配置目录
+module_configdir=/data/maxscale/maxscale/etc/
+libdir=/data/maxscale/maxscale/lib64/maxscale/
+sharedir=/data/maxscale/maxscale/share/maxscale
+# 配置存储持久化配置的目录。当通过 MaxCtrl 创建新对象时，它将存储在此目录中。
+persistdir=/var/lib/maxscale/maxscale.cnf.d/
+
+
+## 数据库节点设置
+[server1]
+type=server
+address=10.10.80.33
+port=3306
+# 代理协议，查看连接服务器的真实ip mariadb要求版本10.3以上
+proxy_protocol=true
+protocol=MariaDBBackend
+
+[server2]
+type=server
+address=10.10.80.60
+port=3306
+protocol=MariaDBBackend
+
+[server3]
+type=server
+address=10.10.80.55
+port=3306
+protocol=MariaDBBackend
+
+## 监视器设置
+[MariaDB-Monitor]
+type=monitor
+module=mariadbmon
+# 监视器监控的数据库节点
+servers=server1,server2,server3
+
+# 监控用户密码：监视用户需要REPLICATION CLIENT特权才能进行基本监视，如果将使用MariaDB Monitor的自动故障转移，则用户将需要  SUPER, RELOAD, PROCESS, SHOW DATABASES, EVENT 权限
+# 如果使用replication_user和replication_password，则必须向其定义的用户授予以下授权： GRANT REPLICATION SLAVE ON *.* TO 'replication'@'replicationhost';
+# 监视器连接数据库的用户名密码
+
+# 不会参与master选举的节点名
+# servers_no_promotion=server3
+user=maxscale
+password=123456
+# 监控间隔ms
+monitor_interval=2000ms
+# 此参数控制连接到受监控服务器的超时时间 最小值为 1 秒，默认值为 3 秒。
+backend_connect_timeout=3s
+backend_write_timeout=3s
+backend_read_timeout=3s
+
+# 主服务器在被视为失败之前 监视器检测失败的次数。
+failcount=5
+# 主故障和故障转移开始之间的最坏情况延迟 (monitor_interval + backend_connect_timeout) * failcount
+
+# 默认情况下禁用此功能。如果设置为 ON，监视器会尝试给任何带有read_only=OFF 的从属服务器上将 read_only设置为 ON 。
+enforce_read_only_slaves=1
+# 开启协同监控 设定选举方式 此设置独立于全局 MaxScale 设置passive。如果 设置了passive，即使监视器已获取锁，集群操作也会被禁用。
+cooperative_monitoring_locks=majority_of_running
+# 开启自动故障切换
+auto_failover=true
+# 开启自动重新加入集群
+auto_rejoin=true
+# 复制用户的用户名和密码 切换主库使用的账号名密码
+replication_user=rep_maxscale
+replication_password=123456
+
+## 数据脱敏设置
+[Mask-SSN]
+type=filter
+module=masking
+rules=/data/maxscale/masking
+
+## service设置
+[Read-Write-Service]
+type=service
+# readwritesplit 即每个单独的请求都路由到最合适的服务器
+router=readwritesplit
+servers=server1,server2,server3
+# 设置读写数据库的用户名和密码
+user=maxscale
+password=123456
+# 设置主库也可以用于读取操作
+master_accept_reads=true
+# 设置主库断联时的操作逻辑，实现主库切换时不丢SQL入库记录
+master_reconnection=true
+master_failure_mode=error_on_write
+delayed_retry=true
+transaction_replay=true
+
+[Read-Service]
+type=service
+# 数据脱敏
+filters=Mask-SSN
+# readconnroute 在创建会话并将所有请求随后路由到该服务器时根据指定的规则选择服务器
+router=readconnroute
+# 选择哪种类型的服务器进行操作 master、slave、master,slave
+router_options=master,slave
+servers=server1,server2,server3
+user=maxscale
+password=123456
+
+## Listener配置 用于业务端连接
+[Read-Write-Listener]
+type=listener
+service=Read-Write-Service
+protocol=MariaDBClient
+port=4006
+
+
+[Read-Listener]
+type=listener
+service=Read-Service
+protocol=MariaDBClient
+port=4007
