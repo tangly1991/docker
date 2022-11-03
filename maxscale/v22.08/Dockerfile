@@ -1,5 +1,5 @@
 # vim:set ft=dockerfile:
-FROM rockylinux:latest
+FROM rockylinux:9
 
 ENV MXS_VERSION=22.08.22
 
