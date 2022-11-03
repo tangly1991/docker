@@ -1,4 +1,4 @@
-FROM registry.cn-hangzhou.aliyuncs.com/ame/haproxy:v2.7-dev8
+FROM registry.cn-hangzhou.aliyuncs.com/ame/haproxy:2.7-dev8
 
 ENV KEEPALIVED_URL https://www.keepalived.org/software/keepalived-2.2.7.tar.gz
 
@@ -6,17 +6,17 @@ ENV KEEPALIVED_URL https://www.keepalived.org/software/keepalived-2.2.7.tar.gz
 RUN set -eux; \
 	\
 	apk add --no-cache --virtual .build-deps \
+		rsyslog \
+		vim \
+		telnet \
 		gcc \
 		libc-dev \
 		linux-headers \
 		lua5.3-dev \
 		make \
-		openssl \
-		openssl-dev \
 		pcre2-dev \
 		readline-dev \
 		tar \
-		libressl-dev \
 		pcre2 \
 		binutils \
 		file \
@@ -26,9 +26,12 @@ RUN set -eux; \
 		libnl3 \
 		libnl3-dev \
 		musl-dev \
-		libmnl-dev \
 		libnftnl-dev \
+		net-snmp-tools \
+		net-snmp \
 		net-snmp-dev \
+		snmptt \
+		nmap \
 		libtool \
 		autoconf \
 		automake \
@@ -36,6 +39,9 @@ RUN set -eux; \
 	\
 	wget -O keepalived.tar.gz "$KEEPALIVED_URL"; \
 	mkdir -p /usr/src/keepalived; \
+	mkdir -p /usr/local/etc/keepalived; \
+	chown "haproxy:haproxy" /usr/local/etc/keepalived; \
+	chmod -R 744 /usr/local/etc/keepalived; \
 	tar -xzf keepalived.tar.gz -C /usr/src/keepalived --strip-components=1; \
 	rm keepalived.tar.gz; \
 	\
@@ -64,12 +70,6 @@ RUN set -eux; \
     && cd - \
     && rm -rf /usr/src/keepalived
 
-# https://www.haproxy.org/download/1.8/doc/management.txt
-# "4. Stopping and restarting HAProxy"
-# "when the SIGTERM signal is sent to the haproxy process, it immediately quits and all established connections are closed"
-# "graceful stop is triggered when the SIGUSR1 signal is sent to the haproxy process"
-STOPSIGNAL SIGUSR1
-
 # set keepalived as image entrypoint with --dont-fork and --log-console (to make it docker friendly)
 # define /etc/keepalived/keepalived.conf as the configuration file to use
 # ENTRYPOINT ["/usr/sbin/keepalived", "--dont-fork", "--log-console", "-f", "/etc/keepalived/keepalived.conf"]
@@ -79,11 +79,31 @@ STOPSIGNAL SIGUSR1
 
 # Include our custom entrypoint that will the the job of lifting
 # rsyslog alongside haproxy.
-ADD entrypoint.sh /
+COPY entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 
+RUN if [ -f "/usr/local/etc/haproxy/haproxy.cfg" ]; \
+    then \
+        mv /usr/local/etc/haproxy/haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg.bak; \
+    fi
+
+COPY haproxy.cfg /usr/local/etc/haproxy
+
+RUN mkdir -p /config/haproxy
 RUN mkdir -p /config/keepalived
+RUN ln -s /usr/local/etc/haproxy /config/haproxy
 RUN ln -s /etc/keepalived /config/keepalived
 
+RUN cd / && ls -l && cd - && cd /usr/local/etc && ls -l && cd - && cd /usr/local/etc/haproxy && ls -l && cd - && \
+    cd /var/lib && ls -l && cd - && cd /var/lib/haproxy-pid && ls -l && cd -
+
+# https://www.haproxy.org/download/1.8/doc/management.txt
+# "4. Stopping and restarting HAProxy"
+# "when the SIGTERM signal is sent to the haproxy process, it immediately quits and all established connections are closed"
+# "graceful stop is triggered when the SIGUSR1 signal is sent to the haproxy process"
+STOPSIGNAL SIGUSR1
+
 # Set our custom entrypoint as the image's default entrypoint
-ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
+
+CMD ["haproxy", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]

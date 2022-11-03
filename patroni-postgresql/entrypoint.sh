@@ -21,7 +21,7 @@ log:
 
 restapi:
   listen: 0.0.0.0:8008
-  connect_address: '${PATRONI_POD_IP}:8008'
+  connect_address: ${PATRONI_POD_IP}:8008
 
 etcd:
   host: ${PATRONI_ETCD_POD_IP}:2379
@@ -38,7 +38,7 @@ bootstrap:
       use_pg_rewind: true
       use_slots: true
       parameters:
-        listen_addresses: "0.0.0.0"
+        listen_addresses: 0.0.0.0
         port: 5432
         wal_level: replica
         hot_standby: "on"
@@ -64,7 +64,7 @@ bootstrap:
 
 postgresql:
   listen: 0.0.0.0:5432
-  connect_address: '${PATRONI_POD_IP}:5432'
+  connect_address: ${PATRONI_POD_IP}:5432
   data_dir: ${PATRONI_POSTGRESQL_DATA_DIR}
   pgpass: ${PATRONI_POSTGRESQL_PGPASS}
   pg_ctl_timeout: 60
@@ -73,11 +73,11 @@ postgresql:
   remove_data_directory_on_diverged_timelines: true
   authentication:
     superuser:
-      username: '${PATRONI_SUPERUSER_USERNAME}'
-      password: '${PATRONI_SUPERUSER_PASSWORD}'
+      username: ${PATRONI_SUPERUSER_USERNAME}
+      password: ${PATRONI_SUPERUSER_PASSWORD}
     replication:
-      username: '${PATRONI_REPLICATION_USERNAME}'
-      password: '${PATRONI_REPLICATION_PASSWORD}'
+      username: ${PATRONI_REPLICATION_USERNAME}
+      password: ${PATRONI_REPLICATION_PASSWORD}
   callbacks:
     on_start: /callback.sh
     on_role_change: /callback.sh

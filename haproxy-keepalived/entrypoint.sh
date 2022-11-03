@@ -1,20 +1,19 @@
-#!/bin/bash
-
-set -o errexit
-set -o nounset
+#!/bin/sh
+set -e
 
 readonly RSYSLOG_PID="/var/run/rsyslogd.pid"
 
 main() {
   start_keepalived
-  start_rsyslogd
+  # start_rsyslogd
   start_haproxy "$@"
 }
 
 # make sure we have keepalived's pid file not created before
 start_keepalived() {
-  cat > /etc/keepalived/keepalived.conf <<__EOF__
+  cat > /usr/local/etc/keepalived/keepalived.conf <<__EOF__
 global_defs {
+    router_id ${ROUTER_ID}
     script_user root
     enable_script_security
 }
@@ -48,7 +47,7 @@ vrrp_instance VI_1 {
 __EOF__
 
   # start keepalived
-  exec /usr/sbin/keepalived --dont-fork --log-console -n -l -D -f /etc/keepalived/keepalived.conf
+  # exec /usr/sbin/keepalived --dont-fork --log-console -n -l -D -f /usr/local/etc/keepalived/keepalived.conf
 }
 
 # make sure we have rsyslogd's pid file not created before

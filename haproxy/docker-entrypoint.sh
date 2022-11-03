@@ -1,6 +1,8 @@
 #!/bin/sh
 set -e
 
+rm -rf /var/lib/haproxy-pid/haproxy.pid
+
 # first arg is `-f` or `--some-option`
 if [ "${1#-}" != "$1" ]; then
 	set -- haproxy "$@"
