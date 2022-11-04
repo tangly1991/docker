@@ -1,5 +1,5 @@
 # vim:set ft=dockerfile:
-FROM rockylinux:8
+FROM rockylinux:9
 
 ENV MXS_VERSION=22.08.2
 
@@ -27,9 +27,16 @@ RUN dnf clean expire-cache && \
     openssl \
     procps-ng \
     rsyslog \
-    tini \
     vim \
     wget
+
+# Add Tini
+ENV TINI_VERSION v0.19.0
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/bin/tini
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini.asc /tini.asc
+RUN gpg --batch --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 595E85A6B1B4779EA4DAAEC70B588DFF0527A9B7 \
+ && gpg --batch --verify /tini.asc /usr/bin/tini
+RUN chmod +x /usr/bin/tini
 
 # Copy Files To Image
 COPY config/maxscale.cnf /etc/
