@@ -82,8 +82,8 @@ RUN dnf clean all && \
 RUN mkdir -p /data/maxscale/ && \
     mkdir -p /data/maxscale/log/ && \
     mkdir -p /data/maxscale/data/
-    # chown maxscale /data/maxscale/log/ && \
-    # chown maxscale /data/maxscale/data/
+    chown maxscale /data/maxscale/log/ && \
+    chown maxscale /data/maxscale/data/
 
 # Start Up
 ENTRYPOINT ["/usr/bin/tini","--","docker-entrypoint.sh"]
