@@ -85,7 +85,7 @@ replication_password=123456
 [Mask-SSN]
 type=filter
 module=masking
-# rules=/data/maxscale/masking
+rules=/path/to/rules-file
 
 ## service设置
 [Read-Write-Service]
