@@ -9,17 +9,17 @@ admin_secure_gui=false
 admin_host=0.0.0.0
 
 # 日志目录
-logdir=/data/maxscale/log/
+# logdir=/data/maxscale/log/
 # 数据目录
-datadir=/data/maxscale/data/
+# datadir=/data/maxscale/data/
 # pid文件
-piddir=/data/maxscale/
+# piddir=/data/maxscale/
 # 模块配置目录
-module_configdir=/data/maxscale/maxscale/etc/
-libdir=/data/maxscale/maxscale/lib64/maxscale/
-sharedir=/data/maxscale/maxscale/share/maxscale
+# module_configdir=/data/maxscale/maxscale/etc/
+# libdir=/data/maxscale/maxscale/lib64/maxscale/
+# sharedir=/data/maxscale/maxscale/share/maxscale
 # 配置存储持久化配置的目录。当通过 MaxCtrl 创建新对象时，它将存储在此目录中。
-persistdir=/var/lib/maxscale/maxscale.cnf.d/
+# persistdir=/var/lib/maxscale/maxscale.cnf.d/
 
 
 ## 数据库节点设置
