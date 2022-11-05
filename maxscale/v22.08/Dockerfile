@@ -3,9 +3,6 @@ FROM rockylinux:9
 
 ENV MXS_VERSION=22.08.2
 
-RUN groupadd maxscale; \
-    useradd -g maxscale maxscale
-
 # Add MariaDB Enterprise Repo
 RUN curl -LsS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | \
     bash -s -- --mariadb-maxscale-version=${MXS_VERSION} --apply
@@ -78,12 +75,6 @@ RUN dnf clean all && \
     find /var/log -type f -exec cp /dev/null {} \; && \
     cat /dev/null > ~/.bash_history && \
     history -c
-
-RUN mkdir -p /data/maxscale/ && \
-    mkdir -p /data/maxscale/log/ && \
-    mkdir -p /data/maxscale/data/
-    chown maxscale /data/maxscale/log/ && \
-    chown maxscale /data/maxscale/data/
 
 # Start Up
 ENTRYPOINT ["/usr/bin/tini","--","docker-entrypoint.sh"]
